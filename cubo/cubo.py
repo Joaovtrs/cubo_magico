@@ -158,3 +158,10 @@ class Cubo:
         self.face_right.reset()
         self.face_back.reset()
         self.face_down.reset()
+
+    def state(self):
+        return (
+                self.face_up.state() + self.face_left.state() +
+                self.face_front.state() + self.face_right.state() +
+                self.face_back.state() + self.face_down.state()
+        )

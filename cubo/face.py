@@ -30,7 +30,6 @@ class Face:
             self.blocos[2, 1] = p8
             self.blocos[2, 0] = p1
             self.blocos[1, 0] = p2
-            print(f'rotate {self.blocos[1, 1]} reverso')
         else:
             self.blocos[0, 0] = p7
             self.blocos[0, 1] = p8
@@ -40,7 +39,6 @@ class Face:
             self.blocos[2, 1] = p4
             self.blocos[2, 0] = p5
             self.blocos[1, 0] = p6
-            print(f'rotate {self.blocos[1, 1]} normal')
 
     def get_up(self):
         return self.blocos[0].copy()
@@ -68,3 +66,10 @@ class Face:
 
     def reset(self):
         self.blocos[:, :] = self.blocos[1, 1]
+
+    def state(self):
+        return (
+                self.blocos[0, 0] + self.blocos[0, 1] + self.blocos[0, 2] +
+                self.blocos[1, 0] + self.blocos[1, 2] + self.blocos[2, 0] +
+                self.blocos[2, 1] + self.blocos[2, 2]
+        )
