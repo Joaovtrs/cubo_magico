@@ -65,3 +65,6 @@ class Face:
 
     def set_down(self, colors):
         self.blocos[2] = colors
+
+    def reset(self):
+        self.blocos[:, :] = self.blocos[1, 1]

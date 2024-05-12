@@ -89,6 +89,8 @@ def key_event(e):
         cubo.rotate_down(False)
     if e.key == K_h:
         cubo.rotate_down(True)
+    if e.key == K_SPACE:
+        cubo.reset()
 
 
 configs = {
