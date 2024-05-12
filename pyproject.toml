@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "cubo-magico"
+version = "0.1.0"
+description = ""
+authors = ["João <oliveira.joaovtr@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+numpy = "^1.26.4"
+pygame = "^2.5.2"
+
+
+[tool.poetry.group.dev.dependencies]
+isort = "^5.13.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
