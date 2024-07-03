@@ -1,5 +1,6 @@
-from cubo import Cubo
 from random import choice
+
+from cubo import Cubo
 
 
 def get_resposta(x):
@@ -12,12 +13,18 @@ def get_resposta(x):
 cubo = Cubo()
 
 movimentos = [
-    "u", "u'",
-    "l", "l'",
-    "f", "f'",
-    "r", "r'",
-    "b", "b'",
-    "d", "d'",
+    'u',
+    "u'",
+    'l',
+    "l'",
+    'f',
+    "f'",
+    'r',
+    "r'",
+    'b',
+    "b'",
+    'd',
+    "d'",
 ]
 
 for i in range(1_000):

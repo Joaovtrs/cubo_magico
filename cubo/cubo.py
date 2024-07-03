@@ -12,27 +12,27 @@ class Cubo:
 
     def rotate(self, lado):
         match lado:
-            case "u":
+            case 'u':
                 self.rotate_up(False)
             case "u'":
                 self.rotate_up(True)
-            case "l":
+            case 'l':
                 self.rotate_left(False)
             case "l'":
                 self.rotate_left(True)
-            case "f":
+            case 'f':
                 self.rotate_front(False)
             case "f'":
                 self.rotate_front(True)
-            case "r":
+            case 'r':
                 self.rotate_right(False)
             case "r'":
                 self.rotate_right(True)
-            case "b":
+            case 'b':
                 self.rotate_back(False)
             case "b'":
                 self.rotate_back(True)
-            case "d":
+            case 'd':
                 self.rotate_down(False)
             case "d'":
                 self.rotate_down(True)
@@ -161,7 +161,20 @@ class Cubo:
 
     def state(self):
         return (
-                self.face_up.state() + self.face_left.state() +
-                self.face_front.state() + self.face_right.state() +
-                self.face_back.state() + self.face_down.state()
+            self.face_up.state()
+            + self.face_left.state()
+            + self.face_front.state()
+            + self.face_right.state()
+            + self.face_back.state()
+            + self.face_down.state()
+        )
+
+    def is_assembled(self):
+        return (
+            self.face_up.is_assembled()
+            and self.face_left.is_assembled()
+            and self.face_front.is_assembled()
+            and self.face_right.is_assembled()
+            and self.face_back.is_assembled()
+            and self.face_down.is_assembled()
         )

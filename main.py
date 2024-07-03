@@ -1,3 +1,4 @@
+import numpy as np
 import pygame
 from pygame.locals import *
 
@@ -8,44 +9,32 @@ def draw_cubo():
     for i, r in enumerate(cubo.face_up.blocos):
         for j, c in enumerate(r):
             pygame.draw.rect(
-                screen,
-                colors[c],
-                (300 + 100 * j, 000 + 100 * i, 100, 100)
+                screen, colors[c], (300 + 100 * j, 000 + 100 * i, 100, 100)
             )
     for i, r in enumerate(cubo.face_left.blocos):
         for j, c in enumerate(r):
             pygame.draw.rect(
-                screen,
-                colors[c],
-                (000 + 100 * j, 300 + 100 * i, 100, 100)
+                screen, colors[c], (000 + 100 * j, 300 + 100 * i, 100, 100)
             )
     for i, r in enumerate(cubo.face_front.blocos):
         for j, c in enumerate(r):
             pygame.draw.rect(
-                screen,
-                colors[c],
-                (300 + 100 * j, 300 + 100 * i, 100, 100)
+                screen, colors[c], (300 + 100 * j, 300 + 100 * i, 100, 100)
             )
     for i, r in enumerate(cubo.face_right.blocos):
         for j, c in enumerate(r):
             pygame.draw.rect(
-                screen,
-                colors[c],
-                (600 + 100 * j, 300 + 100 * i, 100, 100)
+                screen, colors[c], (600 + 100 * j, 300 + 100 * i, 100, 100)
             )
     for i, r in enumerate(cubo.face_back.blocos):
         for j, c in enumerate(r):
             pygame.draw.rect(
-                screen,
-                colors[c],
-                (900 + 100 * j, 300 + 100 * i, 100, 100)
+                screen, colors[c], (900 + 100 * j, 300 + 100 * i, 100, 100)
             )
     for i, r in enumerate(cubo.face_down.blocos):
         for j, c in enumerate(r):
             pygame.draw.rect(
-                screen,
-                colors[c],
-                (300 + 100 * j, 600 + 100 * i, 100, 100)
+                screen, colors[c], (300 + 100 * j, 600 + 100 * i, 100, 100)
             )
 
     for i in range(11):
@@ -53,44 +42,47 @@ def draw_cubo():
             screen,
             (0, 0, 0),
             (100 + i * 100, 0),
-            (100 + i * 100, configs['window_height'])
+            (100 + i * 100, configs['window_height']),
         )
     for i in range(8):
         pygame.draw.line(
             screen,
             (0, 0, 0),
             (0, 100 + i * 100),
-            (configs['window_length'], 100 + i * 100)
+            (configs['window_length'], 100 + i * 100),
         )
 
 
 def key_event(e):
-    if e.key == K_q:
-        cubo.rotate_up(False)
-    if e.key == K_a:
-        cubo.rotate_up(True)
-    if e.key == K_w:
-        cubo.rotate_left(False)
-    if e.key == K_s:
-        cubo.rotate_left(True)
-    if e.key == K_e:
-        cubo.rotate_front(False)
-    if e.key == K_d:
-        cubo.rotate_front(True)
-    if e.key == K_r:
-        cubo.rotate_right(False)
-    if e.key == K_f:
-        cubo.rotate_right(True)
-    if e.key == K_t:
-        cubo.rotate_back(False)
-    if e.key == K_g:
-        cubo.rotate_back(True)
-    if e.key == K_y:
-        cubo.rotate_down(False)
-    if e.key == K_h:
-        cubo.rotate_down(True)
-    if e.key == K_SPACE:
-        cubo.reset()
+    match e.key:
+        case pygame.locals.K_q:
+            cubo.rotate_up(False)
+        case pygame.locals.K_a:
+            cubo.rotate_up(True)
+        case pygame.locals.K_w:
+            cubo.rotate_left(False)
+        case pygame.locals.K_s:
+            cubo.rotate_left(True)
+        case pygame.locals.K_e:
+            cubo.rotate_front(False)
+        case pygame.locals.K_d:
+            cubo.rotate_front(True)
+        case pygame.locals.K_r:
+            cubo.rotate_right(False)
+        case pygame.locals.K_f:
+            cubo.rotate_right(True)
+        case pygame.locals.K_t:
+            cubo.rotate_back(False)
+        case pygame.locals.K_g:
+            cubo.rotate_back(True)
+        case pygame.locals.K_y:
+            cubo.rotate_down(False)
+        case pygame.locals.K_h:
+            cubo.rotate_down(True)
+        case pygame.locals.K_z:
+            print(cubo.is_assembled())
+        case pygame.locals.K_SPACE:
+            cubo.reset()
 
 
 configs = {
@@ -108,13 +100,15 @@ colors = {
     'd': (230, 130, 0),
 }
 
+movimentos = ['u', "u'", 'l', "l'", 'f', "f'", 'r', "r'", 'b', "b'", 'd', "d'"]
+
 clock = pygame.time.Clock()
 pygame.init()
 
 screen = pygame.display.set_mode(
     (configs['window_length'], configs['window_height'])
 )
-pygame.display.set_caption('Name here')
+pygame.display.set_caption('Cubo')
 
 cubo = Cubo()
 

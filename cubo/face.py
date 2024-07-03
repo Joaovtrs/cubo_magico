@@ -4,11 +4,7 @@ import numpy as np
 class Face:
     def __init__(self, cor):
         self.blocos = np.array(
-            [
-                [cor, cor, cor],
-                [cor, cor, cor],
-                [cor, cor, cor]
-            ]
+            [[cor, cor, cor], [cor, cor, cor], [cor, cor, cor]]
         )
 
     def rotate(self, reverse):
@@ -69,7 +65,24 @@ class Face:
 
     def state(self):
         return (
-                self.blocos[0, 0] + self.blocos[0, 1] + self.blocos[0, 2] +
-                self.blocos[1, 0] + self.blocos[1, 2] + self.blocos[2, 0] +
-                self.blocos[2, 1] + self.blocos[2, 2]
+            self.blocos[0, 0]
+            + self.blocos[0, 1]
+            + self.blocos[0, 2]
+            + self.blocos[1, 0]
+            + self.blocos[1, 2]
+            + self.blocos[2, 0]
+            + self.blocos[2, 1]
+            + self.blocos[2, 2]
+        )
+
+    def is_assembled(self):
+        return (
+            self.blocos[0][0] == self.blocos[1, 1]
+            and self.blocos[0][1] == self.blocos[1, 1]
+            and self.blocos[0][2] == self.blocos[1, 1]
+            and self.blocos[1][0] == self.blocos[1, 1]
+            and self.blocos[1][2] == self.blocos[1, 1]
+            and self.blocos[2][0] == self.blocos[1, 1]
+            and self.blocos[2][1] == self.blocos[1, 1]
+            and self.blocos[2][2] == self.blocos[1, 1]
         )
