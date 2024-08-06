@@ -75,6 +75,16 @@ class Face:
             + self.blocos[2, 2]
         )
 
+    def set_state(self, state):
+        self.blocos[0, 0] = state[0]
+        self.blocos[0, 1] = state[1]
+        self.blocos[0, 2] = state[2]
+        self.blocos[1, 0] = state[3]
+        self.blocos[1, 2] = state[4]
+        self.blocos[2, 0] = state[5]
+        self.blocos[2, 1] = state[6]
+        self.blocos[2, 2] = state[7]
+
     def is_assembled(self):
         return (
             self.blocos[0][0] == self.blocos[1, 1]

@@ -1,3 +1,5 @@
+import pickle
+
 import numpy as np
 import pygame
 from pygame.locals import *
@@ -81,8 +83,18 @@ def key_event(e):
             cubo.rotate_down(True)
         case pygame.locals.K_z:
             print(cubo.is_assembled())
+        case pygame.locals.K_x:
+            move = movimentos[np.argmax(rede(get_state()))]
+            cubo.rotate(move)
         case pygame.locals.K_SPACE:
             cubo.reset()
+
+
+def get_state():
+    state = []
+    for side in cubo.state():
+        state += matrix_side[side]
+    return state
 
 
 configs = {
@@ -100,6 +112,14 @@ colors = {
     'd': (230, 130, 0),
 }
 
+matrix_side = {
+    'u': [1, 0, 0, 0, 0, 0],
+    'l': [0, 1, 0, 0, 0, 0],
+    'f': [0, 0, 1, 0, 0, 0],
+    'r': [0, 0, 0, 1, 0, 0],
+    'b': [0, 0, 0, 0, 1, 0],
+    'd': [0, 0, 0, 0, 0, 1],
+}
 movimentos = ['u', "u'", 'l', "l'", 'f', "f'", 'r', "r'", 'b', "b'", 'd', "d'"]
 
 clock = pygame.time.Clock()
@@ -111,6 +131,9 @@ screen = pygame.display.set_mode(
 pygame.display.set_caption('Cubo')
 
 cubo = Cubo()
+
+with open('redes/rede_geneticas_50_000.pck', 'rb') as arquivo:
+    rede = pickle.load(arquivo)
 
 while configs['playing']:
     clock.tick(configs['tick'])

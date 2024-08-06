@@ -1,4 +1,8 @@
+import csv
+import os
 from random import choice
+
+import pandas as pd
 
 from cubo import Cubo
 
@@ -10,9 +14,18 @@ def get_resposta(x):
         return x + "'"
 
 
+def add_row(df, state, move, layer):
+    return df._append(
+        pd.DataFrame([[state, move, 0, layer]], columns=df_coluns),
+        ignore_index=True,
+    )
+
+
 cubo = Cubo()
 
-movimentos = [
+df_coluns = ['states', 'move', 'verified', 'layer']
+
+moves = [
     'u',
     "u'",
     'l',
@@ -27,13 +40,23 @@ movimentos = [
     "d'",
 ]
 
-for i in range(1_000):
-    cubo.reset()
-    m = choice([10, 10, 10, 20, 20, 20, 30, 30, 30, 50, 100])
-    print(f'Cubo {i + 1} com {m} movimentos')
+filepath = os.path.join('.', 'states', 'states.csv')
 
-    for _ in range(m):
-        c = choice(movimentos)
-        cubo.rotate(c)
-        with open('states.txt', 'a') as file:
-            file.write(cubo.state() + ',' + get_resposta(c) + '\n')
+states = pd.read_csv(filepath)
+
+for _ in range(5000):
+    index = states.loc[states['verified'] == 0].first_valid_index()
+    state = states.loc[index, 'states']
+    layer = states.loc[index, 'layer']
+
+    for move in moves:
+        cubo.set_state(state)
+        cubo.rotate(move)
+        cube_state = cubo.state()
+
+        if cube_state not in states.loc[:, 'states'].values:
+            states = add_row(states, cube_state, move, layer + 1)
+
+    states.loc[index, 'verified'] = 1
+
+states.to_csv(filepath, index=False)

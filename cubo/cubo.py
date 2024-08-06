@@ -169,6 +169,14 @@ class Cubo:
             + self.face_down.state()
         )
 
+    def set_state(self, state):
+        self.face_up.set_state(state[0:8])
+        self.face_left.set_state(state[8:16])
+        self.face_front.set_state(state[16:24])
+        self.face_right.set_state(state[24:32])
+        self.face_back.set_state(state[32:40])
+        self.face_down.set_state(state[40:48])
+
     def is_assembled(self):
         return (
             self.face_up.is_assembled()
