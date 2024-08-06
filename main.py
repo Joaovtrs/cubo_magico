@@ -1,8 +1,9 @@
-import pickle
+import os
 
 import numpy as np
 import pygame
 from pygame.locals import *
+from tensorflow.keras.models import load_model
 
 from cubo import Cubo
 
@@ -56,6 +57,7 @@ def draw_cubo():
 
 
 def key_event(e):
+    global is_model_predicting
     match e.key:
         case pygame.locals.K_q:
             cubo.rotate_up(False)
@@ -84,17 +86,28 @@ def key_event(e):
         case pygame.locals.K_z:
             print(cubo.is_assembled())
         case pygame.locals.K_x:
-            move = movimentos[np.argmax(rede(get_state()))]
-            cubo.rotate(move)
+            is_model_predicting = True
+        case pygame.locals.K_c:
+            is_model_predicting = False
         case pygame.locals.K_SPACE:
             cubo.reset()
 
 
-def get_state():
-    state = []
-    for side in cubo.state():
-        state += matrix_side[side]
-    return state
+def get_one_hot_inputs():
+    resp = []
+    for s in cubo.state():
+        resp += matrix_side[s]
+
+    return np.array([resp])
+
+
+def model_move():
+    move = movimentos[
+        np.random.choice(
+            np.arange(12), p=model.predict(get_one_hot_inputs(), verbose=0)[0]
+        )
+    ]
+    cubo.rotate(move)
 
 
 configs = {
@@ -122,6 +135,8 @@ matrix_side = {
 }
 movimentos = ['u', "u'", 'l', "l'", 'f', "f'", 'r', "r'", 'b', "b'", 'd', "d'"]
 
+model_path = os.path.join('.', 'redes', 'model_256_64_12_elu_nadam_10.keras')
+
 clock = pygame.time.Clock()
 pygame.init()
 
@@ -132,8 +147,9 @@ pygame.display.set_caption('Cubo')
 
 cubo = Cubo()
 
-with open('redes/rede_geneticas_50_000.pck', 'rb') as arquivo:
-    rede = pickle.load(arquivo)
+model = load_model(model_path)
+is_model_predicting = False
+move_count = 0
 
 while configs['playing']:
     clock.tick(configs['tick'])
@@ -143,6 +159,14 @@ while configs['playing']:
             configs['playing'] = False
         if event.type == KEYDOWN:
             key_event(event)
+
+    if is_model_predicting:
+        model_move()
+        move_count += 1
+        if cubo.is_assembled():
+            print(f'moves: {move_count}')
+            is_model_predicting = False
+            move_count = 0
 
     draw_cubo()
 
